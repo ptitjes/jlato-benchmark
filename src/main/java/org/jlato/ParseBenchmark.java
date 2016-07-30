@@ -58,62 +58,42 @@ public class ParseBenchmark {
 	}
 
 	@Benchmark
-	public void parseJavaParserCore_JLaToParser_New(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_New, blackhole);
+	public void javaparser_with_jlato(Blackhole blackhole) throws Exception {
+		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaParserCore_JLaToParser_Old(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Old, blackhole);
+	public void javaparser_with_jlato_preserving(Blackhole blackhole) throws Exception {
+		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaParserCore_JLaToParser_Preserving_New(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving_New, blackhole);
-	}
-
-	@Benchmark
-	public void parseJavaParserCore_JLaToParser_Preserving_Old(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving_Old, blackhole);
-	}
-
-	@Benchmark
-	public void parseJavaParserCore_JavaParserParser_Standard(Blackhole blackhole) throws Exception {
+	public void javaparser_with_javaparser(Blackhole blackhole) throws Exception {
 		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_Standard, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaParserCore_JavaParserParser_WithComments(Blackhole blackhole) throws Exception {
+	public void javaparser_with_javaparser_comments(Blackhole blackhole) throws Exception {
 		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaSlang_JLaToParser_New(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_New, blackhole);
+	public void javaslang_with_jlato(Blackhole blackhole) throws Exception {
+		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaSlang_JLaToParser_Old(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Old, blackhole);
+	public void javaslang_with_jlato_preserving(Blackhole blackhole) throws Exception {
+		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaSlang_JLaToParser_Preserving_New(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving_New, blackhole);
-	}
-
-	@Benchmark
-	public void parseJavaSlang_JLaToParser_Preserving_Old(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving_Old, blackhole);
-	}
-
-	@Benchmark
-	public void parseJavaSlang_JavaParserParser_Standard(Blackhole blackhole) throws Exception {
+	public void javaslang_with_javaparser(Blackhole blackhole) throws Exception {
 		parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_Standard, blackhole);
 	}
 
 	@Benchmark
-	public void parseJavaSlang_JavaParserParser_WithComments(Blackhole blackhole) throws Exception {
+	public void javaslang_with_javaparser_comments(Blackhole blackhole) throws Exception {
 		parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments, blackhole);
 	}
 
