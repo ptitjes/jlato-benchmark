@@ -1,12 +1,12 @@
 package org.jlato;
 
+import com.github.javaparser.InstanceJavaParser;
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Didier Villevalois
@@ -22,11 +22,20 @@ public class JavaParserParser implements BenchmarkedParser {
 	}
 
 	@Override
-	public void parseAll(File directory) throws Exception {
+	public Object parseAll(File directory) throws Exception {
 		List<File> files = collectAllJavaFiles(directory, new ArrayList<File>());
+
+		String rootPath = directory.getAbsolutePath();
+		if (!rootPath.endsWith("/")) rootPath = rootPath + "/";
+
+		Map<String, CompilationUnit> cus = new HashMap<String, CompilationUnit>();
 		for (File file : files) {
-			JavaParser.parse(file, encoding, considerComments);
+			final String path = file.getAbsolutePath().substring(rootPath.length());
+
+			// There is no instance parser in JavaParser !
+			cus.put(path, JavaParser.parse(file, encoding, considerComments));
 		}
+		return cus;
 	}
 
 	// TODO Use NIO filesystem walker

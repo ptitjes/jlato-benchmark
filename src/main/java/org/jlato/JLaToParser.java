@@ -19,7 +19,7 @@ public class JLaToParser implements BenchmarkedParser {
 	}
 
 	@Override
-	public void parseAll(File directory) throws Exception {
-		parser.parseAll(directory, encoding);
+	public Object parseAll(File directory) throws Exception {
+		return parser.parseAll(directory, encoding);
 	}
 }
