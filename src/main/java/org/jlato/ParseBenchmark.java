@@ -32,7 +32,6 @@
 package org.jlato;
 
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.infra.Blackhole;
 
 import java.io.*;
 import java.util.Enumeration;
@@ -58,50 +57,49 @@ public class ParseBenchmark {
 	}
 
 	@Benchmark
-	public void javaparser_with_jlato(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser, blackhole);
+	public Object javaparser_with_jlato() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser);
 	}
 
 	@Benchmark
-	public void javaparser_with_jlato_preserving(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving, blackhole);
+	public Object javaparser_with_jlato_preserving() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving);
 	}
 
 	@Benchmark
-	public void javaparser_with_javaparser(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_Standard, blackhole);
+	public Object javaparser_with_javaparser() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser);
 	}
 
 	@Benchmark
-	public void javaparser_with_javaparser_comments(Blackhole blackhole) throws Exception {
-		parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments, blackhole);
+	public Object javaparser_with_javaparser_comments() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments);
 	}
 
 	@Benchmark
-	public void javaslang_with_jlato(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser, blackhole);
+	public Object javaslang_with_jlato() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser);
 	}
 
 	@Benchmark
-	public void javaslang_with_jlato_preserving(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving, blackhole);
+	public Object javaslang_with_jlato_preserving() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving);
 	}
 
 	@Benchmark
-	public void javaslang_with_javaparser(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_Standard, blackhole);
+	public Object javaslang_with_javaparser() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser);
 	}
 
 	@Benchmark
-	public void javaslang_with_javaparser_comments(Blackhole blackhole) throws Exception {
-		parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments, blackhole);
+	public Object javaslang_with_javaparser_comments() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments);
 	}
 
 	private final File tmpDir = new File("tmp/");
 
-	private void parseSources(String artifactId, String version, BenchmarkedParser parser, Blackhole blackhole) throws Exception {
-		Object object = parser.parseAll(makeTempDir(artifactId, version, "sources"));
-		blackhole.consume(object);
+	private Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
+		return parser.parseAll(makeTempDir(artifactId, version, "sources"));
 	}
 
 	private void unjarSources(String artifactId, String version) throws IOException {

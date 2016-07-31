@@ -11,7 +11,7 @@ public interface BenchmarkedParser {
 
 	Object parseAll(File directory) throws Exception;
 
-	BenchmarkedParser JavaParserParser_Standard = new JavaParserParser("UTF-8", false);
+	BenchmarkedParser JavaParserParser = new JavaParserParser("UTF-8", false);
 	BenchmarkedParser JavaParserParser_WithComments = new JavaParserParser("UTF-8", true);
 
 	BenchmarkedParser JLaToParser = new JLaToParser("UTF-8",
