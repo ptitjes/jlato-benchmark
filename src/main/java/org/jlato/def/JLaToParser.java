@@ -1,4 +1,4 @@
-package org.jlato;
+package org.jlato.def;
 
 import org.jlato.parser.Parser;
 import org.jlato.parser.ParserConfiguration;

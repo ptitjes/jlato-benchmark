@@ -1,6 +1,5 @@
-package org.jlato;
+package org.jlato.def;
 
-import com.github.javaparser.InstanceJavaParser;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 

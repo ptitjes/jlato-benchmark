@@ -29,26 +29,25 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jlato;
+package org.jlato.util;
 
+import org.jlato.def.BenchmarkedParser;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.*;
 import java.util.Enumeration;
-import java.util.concurrent.TimeUnit;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 @State(Scope.Thread)
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class ParseBenchmark {
+public class ParseBenchmarkBase {
 
 	@Setup(Level.Trial)
 	public void unjarSources() throws IOException {
 		tmpDir.mkdirs();
 		unjarSources("javaparser-core", "2.5.1");
 		unjarSources("javaslang", "1.2.2");
+		unjarSources("jlato", "0.0.6");
 	}
 
 	@TearDown(Level.Trial)
@@ -56,49 +55,9 @@ public class ParseBenchmark {
 		rmdir(tmpDir);
 	}
 
-	@Benchmark
-	public Object javaparser_with_jlato() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser);
-	}
-
-	@Benchmark
-	public Object javaparser_with_jlato_preserving() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object javaparser_with_javaparser() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser);
-	}
-
-	@Benchmark
-	public Object javaparser_with_javaparser_comments() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments);
-	}
-
-	@Benchmark
-	public Object javaslang_with_jlato() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser);
-	}
-
-	@Benchmark
-	public Object javaslang_with_jlato_preserving() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object javaslang_with_javaparser() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser);
-	}
-
-	@Benchmark
-	public Object javaslang_with_javaparser_comments() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments);
-	}
-
 	private final File tmpDir = new File("tmp/");
 
-	private Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
+	protected Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
 		return parser.parseAll(makeTempDir(artifactId, version, "sources"));
 	}
 
