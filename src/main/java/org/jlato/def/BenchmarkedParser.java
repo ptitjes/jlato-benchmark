@@ -19,6 +19,11 @@ public interface BenchmarkedParser {
 
 	BenchmarkedParser JLaToParser = new JLaToParser("UTF-8",
 			ParserConfiguration.Default.preserveWhitespaces(false));
+	BenchmarkedParser JLaToParser2 = new JLaToParser("UTF-8",
+			ParserConfiguration.Default.preserveWhitespaces(false).setParser("2"));
+	BenchmarkedParser JLaToParser3 = new JLaToParser("UTF-8",
+			ParserConfiguration.Default.preserveWhitespaces(false).setParser("3"));
+
 	BenchmarkedParser JLaToParser_Preserving = new JLaToParser("UTF-8",
 			ParserConfiguration.Default.preserveWhitespaces(true));
 

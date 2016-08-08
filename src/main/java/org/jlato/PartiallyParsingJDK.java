@@ -63,8 +63,18 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object jdk_with_jlato() throws Exception {
+	public Object jdk_with_jlato1() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JLaToParser);
+	}
+
+	@Benchmark
+	public Object jdk_with_jlato2() throws Exception {
+		return parseJdkSources(BenchmarkedParser.JLaToParser2);
+	}
+
+	@Benchmark
+	public Object jdk_with_jlato3() throws Exception {
+		return parseJdkSources(BenchmarkedParser.JLaToParser3);
 	}
 
 	@Benchmark
