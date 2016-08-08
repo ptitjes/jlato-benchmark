@@ -35,11 +35,25 @@ import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.openjdk.jmh.annotations.*;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class PartiallyParsing extends ParseBenchmarkBase {
+
+	@Setup(Level.Trial)
+	public void unjarSources() throws IOException {
+		tmpDir.mkdirs();
+		unjarSources("javaparser-core", "2.5.1");
+		unjarSources("javaslang", "1.2.2");
+		unjarSources("jlato", "0.0.6");
+	}
+
+	@TearDown(Level.Trial)
+	public void cleanTempDirectory() throws IOException {
+		rmdir(tmpDir);
+	}
 
 	@Benchmark
 	public Object javaparser_with_jlato() throws Exception {
@@ -70,4 +84,9 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 	public Object jlato_with_javaparser() throws Exception {
 		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser);
 	}
+
+//	@Benchmark
+//	public Object jlato_with_antlr() throws Exception {
+//		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4);
+//	}
 }

@@ -32,22 +32,29 @@
 package org.jlato;
 
 import org.jlato.def.BenchmarkedParser;
+import org.jlato.parser.ParseException;
+import org.jlato.parser.Parser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.openjdk.jmh.annotations.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class FullyParsing extends ParseBenchmarkBase {
+public class PartiallyParsingJDK extends ParseBenchmarkBase {
 
 	@Setup(Level.Trial)
-	public void unjarSources() throws IOException {
+	public void unzipJDK() throws IOException {
 		tmpDir.mkdirs();
-		unjarSources("javaparser-core", "2.5.1");
-		unjarSources("javaslang", "1.2.2");
-		unjarSources("jlato", "0.0.6");
+		unzipSources(new File("/home/didier/Downloads/Tech/Dev/openjdk-8-src-b132-03_mar_2014.zip"), "openjdk");
 	}
 
 	@TearDown(Level.Trial)
@@ -56,32 +63,16 @@ public class FullyParsing extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object javaparser_with_jlato() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving);
+	public Object jdk_with_jlato() throws Exception {
+		return parseJdkSources(BenchmarkedParser.JLaToParser);
 	}
 
 	@Benchmark
-	public Object javaparser_with_javaparser() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments);
+	public Object jdk_with_javaparser() throws Exception {
+		return parseJdkSources(BenchmarkedParser.JavaParserParser);
 	}
 
-	@Benchmark
-	public Object javaslang_with_jlato() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object javaslang_with_javaparser() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments);
-	}
-
-	@Benchmark
-	public Object jlato_with_jlato() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object jlato_with_javaparser() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser_WithComments);
+	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
+		return parser.parseAll(new File(makeTempDir("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
 }

@@ -38,30 +38,19 @@ import java.io.*;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 @State(Scope.Thread)
 public class ParseBenchmarkBase {
 
-	@Setup(Level.Trial)
-	public void unjarSources() throws IOException {
-		tmpDir.mkdirs();
-		unjarSources("javaparser-core", "2.5.1");
-		unjarSources("javaslang", "1.2.2");
-		unjarSources("jlato", "0.0.6");
-	}
-
-	@TearDown(Level.Trial)
-	public void cleanTempDirectory() throws IOException {
-		rmdir(tmpDir);
-	}
-
-	private final File tmpDir = new File("tmp/");
+	protected final File tmpDir = new File("tmp/");
 
 	protected Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
 		return parser.parseAll(makeTempDir(artifactId, version, "sources"));
 	}
 
-	private void unjarSources(String artifactId, String version) throws IOException {
+	protected void unjarSources(String artifactId, String version) throws IOException {
 		final InputStream resourceStream =
 				ClassLoader.getSystemResourceAsStream(makeResourceName(artifactId, version));
 		File localJarFile = makeLocalJarFile(artifactId, version);
@@ -86,6 +75,26 @@ public class ParseBenchmarkBase {
 		}
 	}
 
+	protected void unzipSources(File file, String tempDirName) throws IOException {
+		unZip(file, makeTempDir(tempDirName));
+	}
+
+	private static void unZip(File file, File workDirectory) throws IOException {
+		ZipFile zipFile = new ZipFile(file);
+		Enumeration<? extends ZipEntry> entries = zipFile.entries();
+		while (entries.hasMoreElements()) {
+			ZipEntry zipEntry = entries.nextElement();
+			String name = zipEntry.getName();
+			if (name.endsWith(".java")) {
+				InputStream inputStream = zipFile.getInputStream(zipEntry);
+
+				File out = new File(workDirectory, "/" + name);
+				out.getParentFile().mkdirs();
+				copyStreams(inputStream, new FileOutputStream(out));
+			}
+		}
+	}
+
 	private static void copyStreams(InputStream is, OutputStream os) throws IOException {
 		try {
 			byte[] buffer = new byte[1024];
@@ -99,7 +108,7 @@ public class ParseBenchmarkBase {
 		}
 	}
 
-	private static void rmdir(File file)
+	protected static void rmdir(File file)
 			throws IOException {
 		if (file.isDirectory()) {
 			for (String name : file.list()) {
@@ -115,10 +124,15 @@ public class ParseBenchmarkBase {
 	}
 
 	private File makeLocalJarFile(String artifactId, String version) {
-		return new File(tmpDir, artifactId + "-" + version + "-sources.jar");
+		return makeTempDir(artifactId + "-" + version + "-sources.jar");
 	}
 
 	private File makeTempDir(String artifactId, String version, String variant) {
-		return new File(tmpDir, artifactId + "/" + version + "/" + variant + "/");
+		String name = artifactId + "/" + version + "/" + variant + "/";
+		return makeTempDir(name);
+	}
+
+	protected File makeTempDir(String name) {
+		return new File(tmpDir, name);
 	}
 }

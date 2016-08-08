@@ -36,6 +36,7 @@
 		<uberjar.name>benchmarks</uberjar.name>
 		<jlato.version>0.0.7-SNAPSHOT</jlato.version>
 		<javaparser.version>2.5.1</javaparser.version>
+		<antlr.java8.version>1.0-SNAPSHOT</antlr.java8.version>
 	</properties>
 
 	<prerequisites>
@@ -63,6 +64,11 @@
 			<groupId>com.github.javaparser</groupId>
 			<artifactId>javaparser-core</artifactId>
 			<version>${javaparser.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.antlr.grammarsv4</groupId>
+			<artifactId>java8</artifactId>
+			<version>${antlr.java8.version}</version>
 		</dependency>
 	</dependencies>
 

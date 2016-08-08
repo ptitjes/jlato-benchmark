@@ -5,6 +5,7 @@ import com.github.javaparser.ast.CompilationUnit;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -35,6 +36,16 @@ public class JavaParserParser implements BenchmarkedParser {
 			cus.put(path, JavaParser.parse(file, encoding, considerComments));
 		}
 		return cus;
+	}
+
+	@Override
+	public Object parse(File file) throws Exception {
+		return JavaParser.parse(file, encoding);
+	}
+
+	@Override
+	public Object parse(InputStream inputStream, String encoding) throws Exception {
+		return JavaParser.parse(inputStream, encoding);
 	}
 
 	// TODO Use NIO filesystem walker
