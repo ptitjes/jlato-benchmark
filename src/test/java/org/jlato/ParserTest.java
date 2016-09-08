@@ -5,6 +5,7 @@ import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,6 +31,7 @@ public class ParserTest extends ParseBenchmarkBase {
 	}
 
 	@Test
+	@Ignore
 	public void jdk_with_antlr() throws Exception {
 		parseJdkSources(new AntlrParser(false, false, false, true, false));
 	}
