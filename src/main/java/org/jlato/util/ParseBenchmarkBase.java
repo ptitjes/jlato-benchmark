@@ -44,13 +44,21 @@ import java.util.zip.ZipFile;
 @State(Scope.Thread)
 public class ParseBenchmarkBase {
 
-	protected final File tmpDir = new File("tmp/");
+	protected static final File tmpDir = new File("tmp/");
 
-	protected Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
+	public static void mkTmpDir() {
+		tmpDir.mkdirs();
+	}
+
+	public static void rmTmpDir() throws IOException {
+		rmdir(tmpDir);
+	}
+
+	public static Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
 		return parser.parseAll(makeTempDir(artifactId, version, "sources"));
 	}
 
-	protected void unjarSources(String artifactId, String version) throws IOException {
+	public static void unjarSources(String artifactId, String version) throws IOException {
 		final InputStream resourceStream =
 				ClassLoader.getSystemResourceAsStream(makeResourceName(artifactId, version));
 		File localJarFile = makeLocalJarFile(artifactId, version);
@@ -75,7 +83,7 @@ public class ParseBenchmarkBase {
 		}
 	}
 
-	protected void unzipSources(File file, String tempDirName) throws IOException {
+	public static void unzipSources(File file, String tempDirName) throws IOException {
 		unZip(file, makeTempDir(tempDirName));
 	}
 
@@ -119,20 +127,20 @@ public class ParseBenchmarkBase {
 		file.delete();
 	}
 
-	private String makeResourceName(String artifactId, String version) {
+	private static String makeResourceName(String artifactId, String version) {
 		return "sources/" + artifactId + "-" + version + "-sources.jar";
 	}
 
-	private File makeLocalJarFile(String artifactId, String version) {
+	private static File makeLocalJarFile(String artifactId, String version) {
 		return makeTempDir(artifactId + "-" + version + "-sources.jar");
 	}
 
-	private File makeTempDir(String artifactId, String version, String variant) {
+	private static File makeTempDir(String artifactId, String version, String variant) {
 		String name = artifactId + "/" + version + "/" + variant + "/";
 		return makeTempDir(name);
 	}
 
-	protected File makeTempDir(String name) {
+	protected static File makeTempDir(String name) {
 		return new File(tmpDir, name);
 	}
 }

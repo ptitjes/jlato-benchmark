@@ -37,6 +37,7 @@
 		<jlato.version>0.0.7-SNAPSHOT</jlato.version>
 		<javaparser.version>2.5.1</javaparser.version>
 		<antlr.java8.version>1.0-SNAPSHOT</antlr.java8.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<prerequisites>
@@ -69,6 +70,14 @@
 			<groupId>com.antlr.grammarsv4</groupId>
 			<artifactId>java8</artifactId>
 			<version>${antlr.java8.version}</version>
+		</dependency>
+
+		<!-- Test Dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

@@ -66,6 +66,11 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
+	public Object javaparser_with_antlr() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4);
+	}
+
+	@Benchmark
 	public Object javaslang_with_jlato() throws Exception {
 		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser);
 	}
@@ -73,6 +78,11 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 	@Benchmark
 	public Object javaslang_with_javaparser() throws Exception {
 		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser);
+	}
+
+	@Benchmark
+	public Object javaslang_with_antlr() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Antlr4);
 	}
 
 	@Benchmark
@@ -85,8 +95,8 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser);
 	}
 
-//	@Benchmark
-//	public Object jlato_with_antlr() throws Exception {
-//		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4);
-//	}
+	@Benchmark
+	public Object jlato_with_antlr() throws Exception {
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4);
+	}
 }

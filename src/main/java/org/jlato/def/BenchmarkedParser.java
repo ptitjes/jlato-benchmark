@@ -27,5 +27,5 @@ public interface BenchmarkedParser {
 	BenchmarkedParser JLaToParser_Preserving = new JLaToParser("UTF-8",
 			ParserConfiguration.Default.preserveWhitespaces(true));
 
-	BenchmarkedParser Antlr4 = new AntlrParser(false, false, true, false, true);
+	BenchmarkedParser Antlr4 = new AntlrParser(false, false, false, true, true);
 }

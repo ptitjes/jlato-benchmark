@@ -32,20 +32,12 @@
 package org.jlato;
 
 import org.jlato.def.BenchmarkedParser;
-import org.jlato.parser.ParseException;
-import org.jlato.parser.Parser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
@@ -53,13 +45,13 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 
 	@Setup(Level.Trial)
 	public void unzipJDK() throws IOException {
-		tmpDir.mkdirs();
+		mkTmpDir();
 		unzipSources(new File("/home/didier/Downloads/Tech/Dev/openjdk-8-src-b132-03_mar_2014.zip"), "openjdk");
 	}
 
 	@TearDown(Level.Trial)
 	public void cleanTempDirectory() throws IOException {
-		rmdir(tmpDir);
+		rmTmpDir();
 	}
 
 	@Benchmark
@@ -80,6 +72,11 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 	@Benchmark
 	public Object jdk_with_javaparser() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JavaParserParser);
+	}
+
+	@Benchmark
+	public Object jdk_with_antlr() throws Exception {
+		return parseJdkSources(BenchmarkedParser.Antlr4);
 	}
 
 	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
