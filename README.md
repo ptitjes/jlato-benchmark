@@ -5,7 +5,8 @@ Benchmark code to test JLaTo against Javac and JavaParser
 
 Be aware that the benchmarks' executions are really long. So you should run them during the night.
 
-You can browse some preliminary results [here](./results.pdf).
+You can browse some preliminary results [here](./results.pdf). 
+Results obtained on a MacBookPro 11,4 (Intel Core i7 4980HQ @ 2.8GHz + SSD) running openjdk-1.8.0.92.
 
 ### To run parse benchmark of different libraries (~1h)
 
@@ -16,7 +17,7 @@ mvn validate clean install
 java -jar target/benchmarks.jar "PartiallyParsing\."
 ```
 
-### To benchmark parsing the OpenJDK (~1h)
+### To benchmark parsing the OpenJDK (~2h)
 
 Fist change the location of the OpenJDK in the file `PartiallyParsingJDK` before rebuilding. 
 
