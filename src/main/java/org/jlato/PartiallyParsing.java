@@ -66,8 +66,18 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object javaparser_with_antlr() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4);
+	public Object javaparser_with_javac() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Javac);
+	}
+
+	@Benchmark
+	public Object javaparser_with_antlr_java7() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4_Java7);
+	}
+
+//	@Benchmark
+	public Object javaparser_with_antlr_java8() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4_Java8);
 	}
 
 	@Benchmark
@@ -81,8 +91,13 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object javaslang_with_antlr() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Antlr4);
+	public Object javaslang_with_javac() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Javac);
+	}
+
+//	@Benchmark
+	public Object javaslang_with_antlr_java8() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Antlr4_Java8);
 	}
 
 	@Benchmark
@@ -96,7 +111,12 @@ public class PartiallyParsing extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object jlato_with_antlr() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4);
+	public Object jlato_with_javac() throws Exception {
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.Javac);
+	}
+
+//	@Benchmark
+	public Object jlato_with_antlr_java8() throws Exception {
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4_Java8);
 	}
 }

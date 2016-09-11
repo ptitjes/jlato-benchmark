@@ -10,8 +10,6 @@ import java.io.InputStream;
  */
 public interface BenchmarkedParser {
 
-	Object parse(InputStream inputStream, String encoding) throws Exception;
-	Object parse(File file) throws Exception;
 	Object parseAll(File directory) throws Exception;
 
 	BenchmarkedParser JavaParserParser = new JavaParserParser("UTF-8", false);
@@ -27,5 +25,8 @@ public interface BenchmarkedParser {
 	BenchmarkedParser JLaToParser_Preserving = new JLaToParser("UTF-8",
 			ParserConfiguration.Default.preserveWhitespaces(true));
 
-	BenchmarkedParser Antlr4 = new AntlrParser(false, false, false, true, true);
+	BenchmarkedParser Javac = new JavacParser(true, true, true);
+
+	BenchmarkedParser Antlr4_Java7 = new AntlrJavaParser(false, false, false, true, true);
+	BenchmarkedParser Antlr4_Java8 = new AntlrJava8Parser(false, false, false, true, true);
 }

@@ -1,7 +1,7 @@
 package org.jlato;
 
-import org.jlato.def.AntlrParser;
 import org.jlato.def.BenchmarkedParser;
+import org.jlato.def.JavacParser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.junit.After;
 import org.junit.Before;
@@ -32,11 +32,13 @@ public class ParserTest extends ParseBenchmarkBase {
 
 	@Test
 	@Ignore
-	public void jdk_with_antlr() throws Exception {
-		parseJdkSources(new AntlrParser(false, false, false, true, false));
+	public void jdk_with_javac() throws Exception {
+		parseJdkSources(new JavacParser(false, false, false));
 	}
 
 	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
 		return parser.parseAll(new File(makeTempDir("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
+
+	double[][][] a = new double[0][][];
 }

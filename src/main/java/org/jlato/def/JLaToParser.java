@@ -4,7 +4,6 @@ import org.jlato.parser.Parser;
 import org.jlato.parser.ParserConfiguration;
 
 import java.io.File;
-import java.io.InputStream;
 
 /**
  * @author Didier Villevalois
@@ -24,13 +23,4 @@ public class JLaToParser implements BenchmarkedParser {
 		return parser.parseAll(directory, encoding);
 	}
 
-	@Override
-	public Object parse(File file) throws Exception {
-		return parser.parse(file, encoding);
-	}
-
-	@Override
-	public Object parse(InputStream inputStream, String encoding) throws Exception {
-		return parser.parse(inputStream, encoding);
-	}
 }

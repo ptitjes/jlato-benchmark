@@ -55,16 +55,16 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object jdk_with_jlato1() throws Exception {
+	public Object jdk_with_jlato() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JLaToParser);
 	}
 
-	@Benchmark
+//	@Benchmark
 	public Object jdk_with_jlato2() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JLaToParser2);
 	}
 
-	@Benchmark
+//	@Benchmark
 	public Object jdk_with_jlato3() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JLaToParser3);
 	}
@@ -75,8 +75,13 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
+	public Object jdk_with_javac() throws Exception {
+		return parseJdkSources(BenchmarkedParser.Javac);
+	}
+
+//	@Benchmark
 	public Object jdk_with_antlr() throws Exception {
-		return parseJdkSources(BenchmarkedParser.Antlr4);
+		return parseJdkSources(BenchmarkedParser.Antlr4_Java8);
 	}
 
 	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {

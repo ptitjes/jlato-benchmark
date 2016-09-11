@@ -36,6 +36,7 @@
 		<uberjar.name>benchmarks</uberjar.name>
 		<jlato.version>0.0.7-SNAPSHOT</jlato.version>
 		<javaparser.version>2.5.1</javaparser.version>
+		<antlr.java.version>1.0-SNAPSHOT</antlr.java.version>
 		<antlr.java8.version>1.0-SNAPSHOT</antlr.java8.version>
 		<junit.version>4.11</junit.version>
 	</properties>
@@ -43,6 +44,33 @@
 	<prerequisites>
 		<maven>3.0</maven>
 	</prerequisites>
+
+	<profiles>
+		<profile>
+			<id>windows-profile</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<file>
+					<exists>${java.home}/lib/tools.jar</exists>
+				</file>
+			</activation>
+			<properties>
+				<jdktools>${java.home}/lib/tools.jar</jdktools>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-profile</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<file>
+					<exists>${java.home}/../lib/tools.jar</exists>
+				</file>
+			</activation>
+			<properties>
+				<jdktools>${java.home}/../lib/tools.jar</jdktools>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -68,8 +96,18 @@
 		</dependency>
 		<dependency>
 			<groupId>com.antlr.grammarsv4</groupId>
+			<artifactId>java</artifactId>
+			<version>${antlr.java.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.antlr.grammarsv4</groupId>
 			<artifactId>java8</artifactId>
 			<version>${antlr.java8.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jdk.tools</groupId>
+			<artifactId>jdk.tools</artifactId>
+			<version>jdk1.8.0</version>
 		</dependency>
 
 		<!-- Test Dependencies -->
@@ -82,7 +120,37 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}</directory>
+				<includes>
+					<include>${jdktools}</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>jdk.tools</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<groupId>jdk.tools</groupId>
+							<artifactId>jdk.tools</artifactId>
+							<version>jdk1.8.0</version>
+							<packaging>jar</packaging>
+							<file>${jdktools}</file>
+							<createChecksum>true</createChecksum>
+							<generatePom>true</generatePom>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
