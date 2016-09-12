@@ -22,7 +22,7 @@ public class ParserTest extends ParseBenchmarkBase {
 	@Before
 	public void tearUp() throws IOException {
 		mkTmpDir();
-		unzipSources(new File("/home/didier/Downloads/Tech/Dev/openjdk-8-src-b132-03_mar_2014.zip"), "openjdk");
+		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
 	}
 
 	@After
@@ -37,7 +37,7 @@ public class ParserTest extends ParseBenchmarkBase {
 	}
 
 	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
-		return parser.parseAll(new File(makeTempDir("openjdk"), "openjdk/jdk/src/share/classes/"));
+		return parser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
 
 	double[][][] a = new double[0][][];

@@ -10,7 +10,7 @@ Results obtained on a MacBookPro 11,4 (Intel Core i7 4980HQ @ 2.8GHz + SSD) runn
 
 ### To run parse benchmark of different libraries (~1h)
 
-The libraries are automatically downloaded from Maven Central.
+The libraries are automatically downloaded from Maven Central as part of the maven build.
 
 ```sh
 mvn validate clean install
@@ -21,7 +21,7 @@ This will produce a new PDF file in the `results` directory.
 
 ### To benchmark parsing the OpenJDK (~2h)
 
-Fist change the location of the OpenJDK in the file `PartiallyParsingJDK` before rebuilding. 
+The OpenJDK is automatically downloaded from java.net as part of the maven build.
 
 ```sh
 mvn validate clean install

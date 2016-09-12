@@ -46,7 +46,7 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 	@Setup(Level.Trial)
 	public void unzipJDK() throws IOException {
 		mkTmpDir();
-		unzipSources(new File("/home/didier/Downloads/Tech/Dev/openjdk-8-src-b132-03_mar_2014.zip"), "openjdk");
+		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
 	}
 
 	@TearDown(Level.Trial)
@@ -59,12 +59,12 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 		return parseJdkSources(BenchmarkedParser.JLaToParser);
 	}
 
-//	@Benchmark
+	//	@Benchmark
 	public Object jdk_with_jlato2() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JLaToParser2);
 	}
 
-//	@Benchmark
+	//	@Benchmark
 	public Object jdk_with_jlato3() throws Exception {
 		return parseJdkSources(BenchmarkedParser.JLaToParser3);
 	}
@@ -79,12 +79,12 @@ public class PartiallyParsingJDK extends ParseBenchmarkBase {
 		return parseJdkSources(BenchmarkedParser.Javac);
 	}
 
-//	@Benchmark
+	//	@Benchmark
 	public Object jdk_with_antlr() throws Exception {
 		return parseJdkSources(BenchmarkedParser.Antlr4_Java8);
 	}
 
 	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
-		return parser.parseAll(new File(makeTempDir("openjdk"), "openjdk/jdk/src/share/classes/"));
+		return parser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
 }

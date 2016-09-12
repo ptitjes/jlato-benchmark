@@ -55,7 +55,7 @@ public class ParseBenchmarkBase {
 	}
 
 	public static Object parseSources(String artifactId, String version, BenchmarkedParser parser) throws Exception {
-		return parser.parseAll(makeTempDir(artifactId, version, "sources"));
+		return parser.parseAll(makeTempDirFile(artifactId, version, "sources"));
 	}
 
 	public static void unjarSources(String artifactId, String version) throws IOException {
@@ -64,7 +64,7 @@ public class ParseBenchmarkBase {
 		File localJarFile = makeLocalJarFile(artifactId, version);
 
 		copyStreams(resourceStream, new FileOutputStream(localJarFile));
-		unJar(localJarFile, makeTempDir(artifactId, version, "sources"));
+		unJar(localJarFile, makeTempDirFile(artifactId, version, "sources"));
 	}
 
 	private static void unJar(File file, File workDirectory) throws IOException {
@@ -83,8 +83,13 @@ public class ParseBenchmarkBase {
 		}
 	}
 
-	public static void unzipSources(File file, String tempDirName) throws IOException {
-		unZip(file, makeTempDir(tempDirName));
+	public static void unzipSources(String resourceName, String tempDirName) throws IOException {
+		final InputStream resourceStream =
+				ClassLoader.getSystemResourceAsStream(makeResourceName(resourceName));
+		File localZipFile = makeTempDirFile(resourceName);
+
+		copyStreams(resourceStream, new FileOutputStream(localZipFile));
+		unZip(localZipFile, makeTempDirFile(tempDirName));
 	}
 
 	private static void unZip(File file, File workDirectory) throws IOException {
@@ -131,16 +136,20 @@ public class ParseBenchmarkBase {
 		return "sources/" + artifactId + "-" + version + "-sources.jar";
 	}
 
+	private static String makeResourceName(String resourceName) {
+		return "sources/" + resourceName;
+	}
+
 	private static File makeLocalJarFile(String artifactId, String version) {
-		return makeTempDir(artifactId + "-" + version + "-sources.jar");
+		return makeTempDirFile(artifactId + "-" + version + "-sources.jar");
 	}
 
-	private static File makeTempDir(String artifactId, String version, String variant) {
+	private static File makeTempDirFile(String artifactId, String version, String variant) {
 		String name = artifactId + "/" + version + "/" + variant + "/";
-		return makeTempDir(name);
+		return makeTempDirFile(name);
 	}
 
-	protected static File makeTempDir(String name) {
+	protected static File makeTempDirFile(String name) {
 		return new File(tmpDir, name);
 	}
 }
