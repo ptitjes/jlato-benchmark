@@ -29,7 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jlato;
+package org.jlato.bench;
 
 import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;

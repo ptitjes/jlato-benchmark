@@ -29,7 +29,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jlato;
+package org.jlato.bench;
 
 import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class FullyParsing extends ParseBenchmarkBase {
+public class PartiallyParsing extends ParseBenchmarkBase {
 
 	@Setup(Level.Trial)
 	public void unjarSources() throws IOException {
@@ -57,31 +57,66 @@ public class FullyParsing extends ParseBenchmarkBase {
 
 	@Benchmark
 	public Object javaparser_with_jlato() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving);
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser);
 	}
 
 	@Benchmark
 	public Object javaparser_with_javaparser() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments);
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser);
+	}
+
+	@Benchmark
+	public Object javaparser_with_javac() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Javac);
+	}
+
+	@Benchmark
+	public Object javaparser_with_antlr_java7() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4_Java7);
+	}
+
+//	@Benchmark
+	public Object javaparser_with_antlr_java8() throws Exception {
+		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4_Java8);
 	}
 
 	@Benchmark
 	public Object javaslang_with_jlato() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving);
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser);
 	}
 
 	@Benchmark
 	public Object javaslang_with_javaparser() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments);
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser);
+	}
+
+	@Benchmark
+	public Object javaslang_with_javac() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Javac);
+	}
+
+//	@Benchmark
+	public Object javaslang_with_antlr_java8() throws Exception {
+		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Antlr4_Java8);
 	}
 
 	@Benchmark
 	public Object jlato_with_jlato() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JLaToParser_Preserving);
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.JLaToParser);
 	}
 
 	@Benchmark
 	public Object jlato_with_javaparser() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser_WithComments);
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser);
+	}
+
+	@Benchmark
+	public Object jlato_with_javac() throws Exception {
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.Javac);
+	}
+
+//	@Benchmark
+	public Object jlato_with_antlr_java8() throws Exception {
+		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4_Java8);
 	}
 }
