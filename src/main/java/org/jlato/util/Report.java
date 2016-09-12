@@ -3,6 +3,7 @@ package org.jlato.util;
 import com.itextpdf.awt.PdfGraphics2D;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
@@ -125,10 +126,16 @@ public class Report {
 				StatisticalCategoryDataset dataset = entry.getValue();
 				BenchmarkParams params = perTitleParams == null ? null : perTitleParams.get(title);
 
-				Chunk chunk = new Chunk(title, CHAPTER_FONT);
-				Chapter chapter = new Chapter(new Paragraph(chunk), chapterNumber++);
+				Paragraph titleParagraph = new Paragraph(new Chunk(title, CHAPTER_FONT));
+				Chapter chapter = new Chapter(titleParagraph, chapterNumber++);
 				chapter.setNumberDepth(0);
 				chapter.setTriggerNewPage(true);
+
+				LineSeparator separator = new LineSeparator();
+				separator.setOffset(14);
+				Paragraph separatorParagraph = new Paragraph(new Chunk(separator));
+				separatorParagraph.setSpacingAfter(-18);
+				chapter.add(separatorParagraph);
 
 				if (params != null) {
 					chapter.add(makeHeaderParagraph("", org.openjdk.jmh.util.Version.getVersion()));
@@ -207,7 +214,8 @@ public class Report {
 	protected Paragraph makeHeaderParagraph(String name, String content) {
 		Chunk chunk = new Chunk(name + (name.equals("") ? "" : ": "), BOLD_FONT);
 		Paragraph paragraph = new Paragraph(chunk);
-		paragraph.setSpacingAfter(-2);
+		paragraph.setSpacingAfter(-4);
+		paragraph.setIndentationLeft(16);
 		paragraph.add(new Chunk(content, NORMAL_FONT));
 		return paragraph;
 	}
