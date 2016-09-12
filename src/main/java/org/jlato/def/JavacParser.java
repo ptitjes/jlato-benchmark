@@ -47,12 +47,13 @@ public class JavacParser implements BenchmarkedParser {
 			final String path = file.getAbsolutePath().substring(rootPath.length());
 
 			// There is no instance parser in JavaParser !
-			cus.put(path, parse(file));
+			cus.put(path, parseFile(file));
 		}
 		return cus;
 	}
 
-	public Object parse(File file) throws Exception {
+	@Override
+	public Object parseFile(File file) throws Exception {
 		FileInputStream fis = new FileInputStream(file);
 		FileChannel fc = fis.getChannel();
 

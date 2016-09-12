@@ -39,7 +39,7 @@ public class AntlrJavaParser implements BenchmarkedParser {
 		String rootPath = directory.getAbsolutePath();
 		if (!rootPath.endsWith("/")) rootPath = rootPath + "/";
 
-		Map<String, ParseTree> cus = new HashMap<String, ParseTree>();
+		Map<String, Object> cus = new HashMap<String, Object>();
 		for (File file : files) {
 			final String path = file.getAbsolutePath().substring(rootPath.length());
 
@@ -49,7 +49,8 @@ public class AntlrJavaParser implements BenchmarkedParser {
 		return cus;
 	}
 
-	private ParseTree parseFile(File f) throws Exception {
+	@Override
+	public Object parseFile(File f) throws Exception {
 		try {
 			if (!quiet) System.err.println(f);
 			// Create a scanner that reads from the input stream passed to us

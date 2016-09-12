@@ -42,12 +42,24 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class ParsingLibsFully extends ParseBenchmarkBase {
 
+	@Param({
+			"javaparser-core:2.5.1",
+			"javaslang:1.2.2",
+			"jlato:0.0.6",
+	})
+	private String source;
+
+	@Param({
+			"JLaTo-lex",
+			"JavaParser-cm",
+	})
+	private String parser;
+
 	@Setup(Level.Trial)
 	public void unjarSources() throws IOException {
 		tmpDir.mkdirs();
-		unjarSources("javaparser-core", "2.5.1");
-		unjarSources("javaslang", "1.2.2");
-		unjarSources("jlato", "0.0.6");
+		String[] artifactVersion = source.split(":");
+		unjarSources(artifactVersion[0], artifactVersion[1]);
 	}
 
 	@TearDown(Level.Trial)
@@ -56,32 +68,9 @@ public class ParsingLibsFully extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object javaparser_with_jlato() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object javaparser_with_javaparser() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser_WithComments);
-	}
-
-	@Benchmark
-	public Object javaslang_with_jlato() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object javaslang_with_javaparser() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser_WithComments);
-	}
-
-	@Benchmark
-	public Object jlato_with_jlato() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JLaToParser_Preserving);
-	}
-
-	@Benchmark
-	public Object jlato_with_javaparser() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser_WithComments);
+	public Object time() throws Exception {
+		String[] artifactVersion = source.split(":");
+		BenchmarkedParser benchmarkedParser = BenchmarkedParser.All.get(this.parser);
+		return parseSources(artifactVersion[0], artifactVersion[1], benchmarkedParser);
 	}
 }

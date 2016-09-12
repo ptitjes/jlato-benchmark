@@ -63,17 +63,18 @@ public class Report {
 
 		for (RunResult runResult : runResults) {
 			Result result = runResult.getPrimaryResult();
-			String benchmark = runResult.getParams().getBenchmark();
-			String label = result.getLabel();
+			BenchmarkParams params = runResult.getParams();
+			String benchmark = params.getBenchmark();
 
-			String[] sourceParser = label.split("_with_");
 			String[] benchmarkSplit = benchmark.split("\\.");
 
 			String name = benchmarkSplit[benchmarkSplit.length - 2];
-			String source = sourceParser[0];
-			String parser = sourceParser[1];
+			String source = params.getParam("source");
+			String parser = params.getParam("parser");
 
-			perTitleParams.put(name, runResult.getParams());
+			if (source.endsWith(".java")) source = source.substring(0, source.length() - ".java".length());
+
+			perTitleParams.put(name, params);
 
 			Map<String, Map<String, RunResult>> perSourceResults = allResults.get(name);
 			if (perSourceResults == null) {
@@ -174,13 +175,13 @@ public class Report {
 				paragraph.setSpacingBefore(1);
 				PdfPTable table = new PdfPTable(HEADERS.length);
 				table.setWidthPercentage(100);
-				table.setWidths(new float[]{100, 100, 70, 70, 50, 50, 50});
+				table.setWidths(new float[]{120, 80, 60, 60, 50, 50, 50});
 				for (int i = 0; i < HEADERS.length; i++) {
 					table.addCell(makeCell(HEADERS[i], Element.ALIGN_CENTER, true));
 				}
 				for (Object column : dataset.getColumnKeys()) {
-					Number javacMean = !dataset.getRowKeys().contains("javac") ? null : dataset.getMeanValue("javac", (Comparable) column);
-					Number jlatoMean = !dataset.getRowKeys().contains("jlato") ? null : dataset.getMeanValue("jlato", (Comparable) column);
+					Number javacMean = findMeanFor(column, "Javac", dataset);
+					Number jlatoMean = findMeanFor(column, "JLaTo", dataset);
 
 					for (Object row : dataset.getRowKeys()) {
 						Number mean = dataset.getMeanValue((Comparable) row, (Comparable) column);
@@ -210,6 +211,15 @@ public class Report {
 		}
 		document.close();
 	}
+
+	public Number findMeanFor(Object columnKey, String rowKeyPrefix, StatisticalCategoryDataset dataset) {
+		for (Object rowKey : dataset.getRowKeys()) {
+			if (((String) rowKey).startsWith(rowKeyPrefix))
+				return dataset.getMeanValue((Comparable) rowKey, (Comparable) columnKey);
+		}
+		return null;
+	}
+
 
 	protected Paragraph makeHeaderParagraph(String name, String content) {
 		Chunk chunk = new Chunk(name + (name.equals("") ? "" : ": "), BOLD_FONT);

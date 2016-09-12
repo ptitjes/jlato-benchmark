@@ -42,12 +42,27 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class ParsingLibsPartially extends ParseBenchmarkBase {
 
+	@Param({
+			"javaparser-core:2.5.1",
+			"javaslang:1.2.2",
+			"jlato:0.0.6",
+	})
+	private String source;
+
+	@Param({
+			"JLaTo",
+			"JavaParser",
+			"Javac",
+			"Antlr4-Java7",
+//			"Antlr4-Java8",
+	})
+	private String parser;
+
 	@Setup(Level.Trial)
 	public void unjarSources() throws IOException {
 		tmpDir.mkdirs();
-		unjarSources("javaparser-core", "2.5.1");
-		unjarSources("javaslang", "1.2.2");
-		unjarSources("jlato", "0.0.6");
+		String[] artifactVersion = source.split(":");
+		unjarSources(artifactVersion[0], artifactVersion[1]);
 	}
 
 	@TearDown(Level.Trial)
@@ -56,67 +71,9 @@ public class ParsingLibsPartially extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object javaparser_with_jlato() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JLaToParser);
-	}
-
-	@Benchmark
-	public Object javaparser_with_javaparser() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.JavaParserParser);
-	}
-
-	@Benchmark
-	public Object javaparser_with_javac() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Javac);
-	}
-
-	@Benchmark
-	public Object javaparser_with_antlr_java7() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4_Java7);
-	}
-
-//	@Benchmark
-	public Object javaparser_with_antlr_java8() throws Exception {
-		return parseSources("javaparser-core", "2.5.1", BenchmarkedParser.Antlr4_Java8);
-	}
-
-	@Benchmark
-	public Object javaslang_with_jlato() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JLaToParser);
-	}
-
-	@Benchmark
-	public Object javaslang_with_javaparser() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.JavaParserParser);
-	}
-
-	@Benchmark
-	public Object javaslang_with_javac() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Javac);
-	}
-
-//	@Benchmark
-	public Object javaslang_with_antlr_java8() throws Exception {
-		return parseSources("javaslang", "1.2.2", BenchmarkedParser.Antlr4_Java8);
-	}
-
-	@Benchmark
-	public Object jlato_with_jlato() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JLaToParser);
-	}
-
-	@Benchmark
-	public Object jlato_with_javaparser() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.JavaParserParser);
-	}
-
-	@Benchmark
-	public Object jlato_with_javac() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.Javac);
-	}
-
-//	@Benchmark
-	public Object jlato_with_antlr_java8() throws Exception {
-		return parseSources("jlato", "0.0.6", BenchmarkedParser.Antlr4_Java8);
+	public Object time() throws Exception {
+		String[] artifactVersion = source.split(":");
+		BenchmarkedParser benchmarkedParser = BenchmarkedParser.All.get(this.parser);
+		return parseSources(artifactVersion[0], artifactVersion[1], benchmarkedParser);
 	}
 }

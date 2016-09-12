@@ -108,6 +108,14 @@ public class ParseBenchmarkBase {
 		}
 	}
 
+	public static void copyResource(String resourceName, String tempFileName) throws IOException {
+		final InputStream resourceStream =
+				ClassLoader.getSystemResourceAsStream(makeResourceName(resourceName));
+		File tempFile = makeTempDirFile(tempFileName);
+
+		copyStreams(resourceStream, new FileOutputStream(tempFile));
+	}
+
 	private static void copyStreams(InputStream is, OutputStream os) throws IOException {
 		try {
 			byte[] buffer = new byte[1024];

@@ -43,6 +43,18 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class ParsingJDKPartially extends ParseBenchmarkBase {
 
+	@Param({
+			"OpenJDK 8b132"
+	})
+	private String source;
+
+	@Param({
+			"JLaTo",
+			"JavaParser",
+			"Javac",
+	})
+	private String parser;
+
 	@Setup(Level.Trial)
 	public void unzipJDK() throws IOException {
 		mkTmpDir();
@@ -55,36 +67,8 @@ public class ParsingJDKPartially extends ParseBenchmarkBase {
 	}
 
 	@Benchmark
-	public Object jdk_with_jlato() throws Exception {
-		return parseJdkSources(BenchmarkedParser.JLaToParser);
-	}
-
-	//	@Benchmark
-	public Object jdk_with_jlato2() throws Exception {
-		return parseJdkSources(BenchmarkedParser.JLaToParser2);
-	}
-
-	//	@Benchmark
-	public Object jdk_with_jlato3() throws Exception {
-		return parseJdkSources(BenchmarkedParser.JLaToParser3);
-	}
-
-	@Benchmark
-	public Object jdk_with_javaparser() throws Exception {
-		return parseJdkSources(BenchmarkedParser.JavaParserParser);
-	}
-
-	@Benchmark
-	public Object jdk_with_javac() throws Exception {
-		return parseJdkSources(BenchmarkedParser.Javac);
-	}
-
-	//	@Benchmark
-	public Object jdk_with_antlr() throws Exception {
-		return parseJdkSources(BenchmarkedParser.Antlr4_Java8);
-	}
-
-	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
-		return parser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
+	public Object time() throws Exception {
+		BenchmarkedParser benchmarkedParser = BenchmarkedParser.All.get(this.parser);
+		return benchmarkedParser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
 }
