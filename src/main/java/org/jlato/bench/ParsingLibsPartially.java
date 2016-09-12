@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class PartiallyParsing extends ParseBenchmarkBase {
+public class ParsingLibsPartially extends ParseBenchmarkBase {
 
 	@Setup(Level.Trial)
 	public void unjarSources() throws IOException {
