@@ -33,8 +33,8 @@ public interface BenchmarkedParser {
 
 			all.put("Javac", new JavacParser(true, true, true));
 
-			all.put("Antlr4-Java7", new AntlrJavaParser(false, false, false, true, true));
-			all.put("Antlr4-Java8", new AntlrJava8Parser(false, false, false, true, true));
+			all.put("Antlr4-Java7", new AntlrJavaParser(false, true, false, true, true));
+			all.put("Antlr4-Java8", new AntlrJava8Parser(false, true, false, true, true));
 
 			return all;
 		}
