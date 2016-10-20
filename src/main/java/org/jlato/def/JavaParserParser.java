@@ -13,6 +13,22 @@ import java.util.*;
  */
 public class JavaParserParser implements BenchmarkedParser {
 
+	public static class JavaParserFactory implements Factory {
+
+		private final String encoding;
+		private final boolean considerComments;
+
+		public JavaParserFactory(String encoding, boolean considerComments) {
+			this.encoding = encoding;
+			this.considerComments = considerComments;
+		}
+
+		@Override
+		public BenchmarkedParser instantiate() {
+			return new JavaParserParser(encoding, considerComments);
+		}
+	}
+
 	private final String encoding;
 	private final boolean considerComments;
 

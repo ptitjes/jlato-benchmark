@@ -35,30 +35,49 @@ import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.openjdk.jmh.annotations.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class ParsingJDKPartially extends ParseBenchmarkBase {
+public class ParsingLibs extends ParseBenchmarkBase {
 
 	@Param({
-			"OpenJDK 8b132"
+			"javaparser-core:2.5.1",
+			"javaslang:1.2.2",
+			"jlato:0.0.6",
 	})
 	private String source;
 
 	@Param({
 			"JLaTo",
+			"JLaTo-lex",
+			"JLaTo2",
+			"JLaTo2 x2",
 			"JavaParser",
+			"JavaParser-cm",
 			"Javac",
+			"Antlr4-Java7",
+			"Antlr4-Java7 x2",
+//			"Antlr4-Java8",
 	})
 	private String parser;
 
+	private BenchmarkedParser implementation;
+	private String[] artifactVersion;
+
 	@Setup(Level.Trial)
-	public void unzipJDK() throws IOException {
+	public void unjarSources() throws Exception {
 		mkTmpDir();
-		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
+		artifactVersion = source.split(":");
+		unjarSources(artifactVersion[0], artifactVersion[1]);
+	}
+
+	@Setup(Level.Iteration)
+	public void setupParser() throws Exception {
+		implementation = BenchmarkedParser.All.get(this.parser).instantiate();
+
+		if (this.parser.endsWith("x2")) doParse();
 	}
 
 	@TearDown(Level.Trial)
@@ -68,7 +87,10 @@ public class ParsingJDKPartially extends ParseBenchmarkBase {
 
 	@Benchmark
 	public Object time() throws Exception {
-		BenchmarkedParser benchmarkedParser = BenchmarkedParser.All.get(this.parser);
-		return benchmarkedParser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
+		return doParse();
+	}
+
+	public Object doParse() throws Exception {
+		return parseSources(artifactVersion[0], artifactVersion[1], implementation);
 	}
 }

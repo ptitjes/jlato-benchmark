@@ -35,45 +35,54 @@ import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.openjdk.jmh.annotations.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-public class ParsingLibsPartially extends ParseBenchmarkBase {
+public class ParsingJDK extends ParseBenchmarkBase {
 
 	@Param({
-			"javaparser-core:2.5.1",
-			"javaslang:1.2.2",
-			"jlato:0.0.6",
+			"OpenJDK 8b132"
 	})
 	private String source;
 
 	@Param({
 			"JLaTo",
+			"JLaTo2",
+			"JLaTo2 x2",
 			"JavaParser",
 			"Javac",
-			"Antlr4-Java7",
-//			"Antlr4-Java8",
 	})
 	private String parser;
 
+	private BenchmarkedParser implementation;
+
 	@Setup(Level.Trial)
-	public void unjarSources() throws IOException {
-		tmpDir.mkdirs();
-		String[] artifactVersion = source.split(":");
-		unjarSources(artifactVersion[0], artifactVersion[1]);
+	public void unzipJDK() throws IOException {
+		mkTmpDir();
+		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
+	}
+
+	@Setup(Level.Iteration)
+	public void setupParser() throws Exception {
+		implementation = BenchmarkedParser.All.get(this.parser).instantiate();
+
+		if (this.parser.endsWith("x2")) doParse();
 	}
 
 	@TearDown(Level.Trial)
 	public void cleanTempDirectory() throws IOException {
-		rmdir(tmpDir);
+		rmTmpDir();
 	}
 
 	@Benchmark
 	public Object time() throws Exception {
-		String[] artifactVersion = source.split(":");
-		BenchmarkedParser benchmarkedParser = BenchmarkedParser.All.get(this.parser);
-		return parseSources(artifactVersion[0], artifactVersion[1], benchmarkedParser);
+		return doParse();
+	}
+
+	public Object doParse() throws Exception {
+		return implementation.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
 }

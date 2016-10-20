@@ -10,6 +10,22 @@ import java.io.File;
  */
 public class JLaToParser implements BenchmarkedParser {
 
+	public static class JLaToFactory implements Factory {
+
+		private final String encoding;
+		private final ParserConfiguration configuration;
+
+		public JLaToFactory(String encoding, ParserConfiguration configuration) {
+			this.encoding = encoding;
+			this.configuration = configuration;
+		}
+
+		@Override
+		public BenchmarkedParser instantiate() {
+			return new JLaToParser(encoding, configuration);
+		}
+	}
+
 	private final String encoding;
 	private final Parser parser;
 
@@ -20,7 +36,12 @@ public class JLaToParser implements BenchmarkedParser {
 
 	@Override
 	public Object parseAll(File directory) throws Exception {
-		return parser.parseAll(directory, encoding);
+		try {
+//			parser.clearStats();
+			return parser.parseAll(directory, encoding);
+		} finally {
+//			parser.printStats();
+		}
 	}
 
 	@Override

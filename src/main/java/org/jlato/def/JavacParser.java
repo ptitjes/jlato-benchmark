@@ -18,6 +18,24 @@ import java.util.*;
  */
 public class JavacParser implements BenchmarkedParser {
 
+	public static class JavacFactory implements Factory {
+
+		private final boolean keepDocComments;
+		private final boolean keepEndPos;
+		private final boolean keepLineMap;
+
+		public JavacFactory(boolean keepDocComments, boolean keepEndPos, boolean keepLineMap) {
+			this.keepDocComments = keepDocComments;
+			this.keepEndPos = keepEndPos;
+			this.keepLineMap = keepLineMap;
+		}
+
+		@Override
+		public BenchmarkedParser instantiate() {
+			return new JavacParser(keepDocComments, keepEndPos, keepLineMap);
+		}
+	}
+
 	private final boolean keepDocComments;
 	private final boolean keepEndPos;
 	private final boolean keepLineMap;

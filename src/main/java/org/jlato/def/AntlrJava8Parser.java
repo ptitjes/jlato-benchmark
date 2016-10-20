@@ -18,6 +18,28 @@ import java.util.Map;
  */
 public class AntlrJava8Parser implements BenchmarkedParser {
 
+	public static class AntlrJava8Factory implements Factory {
+
+		public final boolean printTree;
+		public final boolean SLL;
+		public final boolean diag;
+		public final boolean bail;
+		public final boolean quiet;
+
+		public AntlrJava8Factory(boolean printTree, boolean SLL, boolean diag, boolean bail, boolean quiet) {
+			this.printTree = printTree;
+			this.SLL = SLL;
+			this.diag = diag;
+			this.bail = bail;
+			this.quiet = quiet;
+		}
+
+		@Override
+		public BenchmarkedParser instantiate() {
+			return new AntlrJava8Parser(printTree, SLL, diag, bail, quiet);
+		}
+	}
+
 	public final boolean printTree;
 	public final boolean SLL;
 	public final boolean diag;

@@ -23,16 +23,28 @@ public class ParsingBigFiles extends ParseBenchmarkBase {
 
 	@Param({
 			"JLaTo",
+			"JLaTo2",
+			"JLaTo2 x2",
 			"JavaParser",
 			"Javac",
 			"Antlr4-Java7",
+			"Antlr4-Java7 x2",
 	})
 	private String parser;
+
+	private BenchmarkedParser implementation;
 
 	@Setup(Level.Trial)
 	public void copyBigFiles() throws IOException {
 		mkTmpDir();
 		copyResource(source, source);
+	}
+
+	@Setup(Level.Iteration)
+	public void setupParser() throws Exception {
+		implementation = BenchmarkedParser.All.get(this.parser).instantiate();
+
+		if (this.parser.endsWith("x2")) doParse();
 	}
 
 	@TearDown(Level.Trial)
@@ -42,7 +54,10 @@ public class ParsingBigFiles extends ParseBenchmarkBase {
 
 	@Benchmark
 	public Object time() throws Exception {
-		BenchmarkedParser benchmarkedParser = BenchmarkedParser.All.get(this.parser);
-		return benchmarkedParser.parseFile(makeTempDirFile(source));
+		return doParse();
+	}
+
+	public Object doParse() throws Exception {
+		return implementation.parseFile(makeTempDirFile(source));
 	}
 }
