@@ -36,12 +36,7 @@ public class JLaToParser implements BenchmarkedParser {
 
 	@Override
 	public Object parseAll(File directory) throws Exception {
-		try {
-//			parser.clearStats();
-			return parser.parseAll(directory, encoding);
-		} finally {
-//			parser.printStats();
-		}
+		return parser.parseAll(directory, encoding);
 	}
 
 	@Override

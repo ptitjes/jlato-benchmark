@@ -32,6 +32,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jmh.version>1.12</jmh.version>
+		<jmh-report.version>1.0-SNAPSHOT</jmh-report.version>
 		<javac.target>1.8</javac.target>
 		<uberjar.name>benchmarks</uberjar.name>
 		<jlato.version>0.0.7-SNAPSHOT</jlato.version>
@@ -83,6 +84,11 @@
 			<artifactId>jmh-generator-annprocess</artifactId>
 			<version>${jmh.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ptitjes</groupId>
+			<artifactId>jmh-report</artifactId>
+			<version>${jmh-report.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jlato</groupId>
@@ -239,7 +245,7 @@
 							<transformers>
 								<transformer
 										implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>org.jlato.Runner</mainClass>
+									<mainClass>com.github.ptitjes.jmh.report.Main</mainClass>
 								</transformer>
 							</transformers>
 							<filters>
