@@ -29,18 +29,18 @@ public interface BenchmarkedParser {
 			all.put("JavaParser-cm", new JavaParserParser.JavaParserFactory("UTF-8", true));
 
 			all.put("JLaTo", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(false)));
+					ParserConfiguration.Default.preserveWhitespaces(false).setParser("1")));
+			all.put("JLaTo-lex", new JLaToParser.JLaToFactory("UTF-8",
+					ParserConfiguration.Default.preserveWhitespaces(true).setParser("1")));
+
 			all.put("JLaTo2", new JLaToParser.JLaToFactory("UTF-8",
 					ParserConfiguration.Default.preserveWhitespaces(false).setParser("2")));
-			all.put("JLaTo2 x2", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(false).setParser("2")));
-			all.put("JLaTo-lex", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(true)));
+			all.put("JLaTo2-lex", new JLaToParser.JLaToFactory("UTF-8",
+					ParserConfiguration.Default.preserveWhitespaces(true).setParser("2")));
 
 			all.put("Javac", new JavacParser.JavacFactory(true, true, true));
 
 			all.put("Antlr4-Java7", new AntlrJavaParser.AntlrJavaFactory(false, true, false, true, true));
-			all.put("Antlr4-Java7 x2", new AntlrJavaParser.AntlrJavaFactory(false, true, false, true, true));
 			all.put("Antlr4-Java8", new AntlrJava8Parser.AntlrJava8Factory(false, true, false, true, true));
 
 			return all;

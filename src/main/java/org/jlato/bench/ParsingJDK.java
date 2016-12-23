@@ -51,30 +51,36 @@ public class ParsingJDK extends ParseBenchmarkBase {
 	@Param({
 			"JLaTo",
 			"JLaTo2",
-			"JLaTo2 x2",
+			"JLaTo2-x2",
 			"JavaParser",
 			"Javac",
 	})
 	private String parser;
 
-	private BenchmarkedParser implementation;
-
 	@Setup(Level.Trial)
-	public void unzipJDK() throws IOException {
+	public void prepareSources() throws Exception {
 		mkTmpDir();
 		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
 	}
 
-	@Setup(Level.Iteration)
-	public void setupParser() throws Exception {
-		implementation = BenchmarkedParser.All.get(this.parser).instantiate();
-
-		if (this.parser.endsWith("x2")) doParse();
+	@TearDown(Level.Trial)
+	public void cleanupSources() throws IOException {
+		rmTmpDir();
 	}
 
-	@TearDown(Level.Trial)
-	public void cleanTempDirectory() throws IOException {
-		rmTmpDir();
+	private BenchmarkedParser.Factory factory;
+	private BenchmarkedParser warmParser;
+
+	@Setup(Level.Trial)
+	public void setupParser() throws Exception {
+		boolean warmUp = parser.endsWith("-x2");
+		String parserName = !warmUp ? parser : parser.substring(0, parser.length() - 3);
+
+		factory = BenchmarkedParser.All.get(parserName);
+		if (warmUp) {
+			warmParser = factory.instantiate();
+			doParse();
+		}
 	}
 
 	@Benchmark
@@ -83,6 +89,7 @@ public class ParsingJDK extends ParseBenchmarkBase {
 	}
 
 	public Object doParse() throws Exception {
-		return implementation.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
+		BenchmarkedParser parser = warmParser != null ? warmParser : factory.instantiate();
+		return parser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
 }

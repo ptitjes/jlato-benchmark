@@ -53,36 +53,43 @@ public class ParsingLibs extends ParseBenchmarkBase {
 			"JLaTo",
 			"JLaTo-lex",
 			"JLaTo2",
-			"JLaTo2 x2",
+			"JLaTo2-x2",
 			"JavaParser",
 			"JavaParser-cm",
 			"Javac",
 			"Antlr4-Java7",
-			"Antlr4-Java7 x2",
+			"Antlr4-Java7-x2",
 //			"Antlr4-Java8",
 	})
 	private String parser;
 
-	private BenchmarkedParser implementation;
 	private String[] artifactVersion;
 
 	@Setup(Level.Trial)
-	public void unjarSources() throws Exception {
+	public void prepareSources() throws Exception {
 		mkTmpDir();
 		artifactVersion = source.split(":");
 		unjarSources(artifactVersion[0], artifactVersion[1]);
 	}
 
-	@Setup(Level.Iteration)
-	public void setupParser() throws Exception {
-		implementation = BenchmarkedParser.All.get(this.parser).instantiate();
-
-		if (this.parser.endsWith("x2")) doParse();
+	@TearDown(Level.Trial)
+	public void cleanupSources() throws IOException {
+		rmTmpDir();
 	}
 
-	@TearDown(Level.Trial)
-	public void cleanTempDirectory() throws IOException {
-		rmTmpDir();
+	private BenchmarkedParser.Factory factory;
+	private BenchmarkedParser warmParser;
+
+	@Setup(Level.Trial)
+	public void setupParser() throws Exception {
+		boolean warmUp = parser.endsWith("-x2");
+		String parserName = !warmUp ? parser : parser.substring(0, parser.length() - 3);
+
+		factory = BenchmarkedParser.All.get(parserName);
+		if (warmUp) {
+			warmParser = factory.instantiate();
+			doParse();
+		}
 	}
 
 	@Benchmark
@@ -91,6 +98,7 @@ public class ParsingLibs extends ParseBenchmarkBase {
 	}
 
 	public Object doParse() throws Exception {
-		return parseSources(artifactVersion[0], artifactVersion[1], implementation);
+		BenchmarkedParser parser = warmParser != null ? warmParser : factory.instantiate();
+		return parseSources(artifactVersion[0], artifactVersion[1], parser);
 	}
 }
