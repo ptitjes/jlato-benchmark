@@ -23,8 +23,7 @@ public class ParsingBigFiles extends ParseBenchmarkBase {
 
 	@Param({
 			"JLaTo",
-			"JLaTo2",
-			"JLaTo2-x2",
+			"JLaTo-x2",
 			"JavaParser",
 			"Javac",
 			"Antlr4-Java7",

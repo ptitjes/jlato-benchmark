@@ -37,7 +37,7 @@ public class ParserTest extends ParseBenchmarkBase {
 	@Ignore
 	public void jdk() throws Exception {
 		JLaToParser.JLaToFactory factory = new JLaToParser.JLaToFactory("UTF-8",
-				ParserConfiguration.Default.preserveWhitespaces(false).setParser("2"));
+				ParserConfiguration.Default.preserveWhitespaces(false));
 		for (int i = 0; i < 1000; i++) {
 			BenchmarkedParser parser = factory.instantiate();
 

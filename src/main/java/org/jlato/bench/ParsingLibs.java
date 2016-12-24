@@ -52,8 +52,7 @@ public class ParsingLibs extends ParseBenchmarkBase {
 	@Param({
 			"JLaTo",
 			"JLaTo-lex",
-			"JLaTo2",
-			"JLaTo2-x2",
+			"JLaTo-x2",
 			"JavaParser",
 			"JavaParser-cm",
 			"Javac",

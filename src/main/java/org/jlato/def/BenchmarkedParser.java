@@ -29,14 +29,9 @@ public interface BenchmarkedParser {
 			all.put("JavaParser-cm", new JavaParserParser.JavaParserFactory("UTF-8", true));
 
 			all.put("JLaTo", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(false).setParser("1")));
+					ParserConfiguration.Default.preserveWhitespaces(false)));
 			all.put("JLaTo-lex", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(true).setParser("1")));
-
-			all.put("JLaTo2", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(false).setParser("2")));
-			all.put("JLaTo2-lex", new JLaToParser.JLaToFactory("UTF-8",
-					ParserConfiguration.Default.preserveWhitespaces(true).setParser("2")));
+					ParserConfiguration.Default.preserveWhitespaces(true)));
 
 			all.put("Javac", new JavacParser.JavacFactory(true, true, true));
 
