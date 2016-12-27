@@ -177,7 +177,7 @@
 				<executions>
 					<execution>
 						<id>copy</id>
-						<phase>prepare-package</phase>
+						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>
@@ -217,7 +217,7 @@
 				<executions>
 					<execution>
 						<id>install-openjdk-sources</id>
-						<phase>prepare-package</phase>
+						<phase>generate-test-resources</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>

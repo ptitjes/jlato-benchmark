@@ -24,8 +24,10 @@ public class ParserTest extends ParseBenchmarkBase {
 	@Before
 	public void tearUp() throws IOException {
 		mkTmpDir();
-//		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
+		unzipSources("openjdk-8-src-b132-03_mar_2014.zip", "openjdk");
 		unjarSources("javaparser-core", "2.5.1");
+		unjarSources("javaslang", "1.2.2");
+		unjarSources("jlato", "0.0.6");
 	}
 
 	@After
@@ -34,23 +36,28 @@ public class ParserTest extends ParseBenchmarkBase {
 	}
 
 	@Test
-	@Ignore
-	public void jdk() throws Exception {
+	public void parseLibs() throws Exception {
 		JLaToParser.JLaToFactory factory = new JLaToParser.JLaToFactory("UTF-8",
 				ParserConfiguration.Default.preserveWhitespaces(false));
-		for (int i = 0; i < 1000; i++) {
-			BenchmarkedParser parser = factory.instantiate();
 
-			if (i % 20 == 0) System.out.println(i);
-//			parseJdkSources(parser);
-			parseSources("javaparser-core", "2.5.1", parser);
-			parseSources("javaparser-core", "2.5.1", parser);
-		}
+		BenchmarkedParser parser = factory.instantiate();
+
+		parseSources("javaparser-core", "2.5.1", parser);
+		parseSources("javaslang", "1.2.2", parser);
+		parseSources("jlato", "0.0.6", parser);
+	}
+
+	@Test
+	public void parseJDK() throws Exception {
+		JLaToParser.JLaToFactory factory = new JLaToParser.JLaToFactory("UTF-8",
+				ParserConfiguration.Default.preserveWhitespaces(false));
+
+		BenchmarkedParser parser = factory.instantiate();
+
+		parseJdkSources(parser);
 	}
 
 	protected Object parseJdkSources(BenchmarkedParser parser) throws Exception {
 		return parser.parseAll(new File(makeTempDirFile("openjdk"), "openjdk/jdk/src/share/classes/"));
 	}
-
-	double[][][] a = new double[0][][];
 }
