@@ -31,6 +31,10 @@
 
 package org.jlato.bench;
 
+import com.github.ptitjes.jmh.report.annotations.Filter;
+import com.github.ptitjes.jmh.report.annotations.Orientation;
+import com.github.ptitjes.jmh.report.annotations.Plot;
+import com.github.ptitjes.jmh.report.annotations.Report;
 import org.jlato.def.BenchmarkedParser;
 import org.jlato.util.ParseBenchmarkBase;
 import org.openjdk.jmh.annotations.*;
@@ -40,6 +44,10 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Report(plots = {
+		@Plot(filters = {@Filter(param = "parser", pattern = "(?s)^(?!.*-(lex|cm)).*$")}),
+		@Plot(filters = {@Filter(param = "parser", pattern = ".*-(lex|cm)")})
+})
 public class ParsingLibs extends ParseBenchmarkBase {
 
 	@Param({
